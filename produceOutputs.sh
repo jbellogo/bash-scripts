@@ -17,25 +17,25 @@ if [ $# -ne 2 ] || [ ! -r "${2}" ] || [ ! -r "${1}" ] ; then
 fi
 
 
-for tests in $(cat ${1}) ; do
+for test in $(cat ${1}) ; do
 
-	if [ ! -r ${tests}.args ] ; then
+	if [ ! -r ${test}.args ] ; then
 		
-		if [ ! -r ${tests}.in ] ; then    # no arguments, no standard input
+		if [ ! -r ${test}.in ] ; then    # no arguments, no standard input
 			temp=$(mktemp)
 			chmod a=rwx ${temp}
-			"${2}" < ${temp} > ${tests}.out     # if you put the ./ before, you mess up runnign it from different directories
+			"${2}" < ${temp} > ${test}.out     # if you put the ./ before, you mess up runnign it from different directories
 			rm ${temp}
 		else                                 # no arguments, standard input
-			"${2}" < ${tests}.in > ${tests}.out
+			"${2}" < ${test}.in > ${test}.out
 		fi
 
 	else
 
-		if [ ! -r ${tests}.in ] ; then    # arguments, no standard input
-			"${2}" $(cat ${tests}.args) > ${tests}.out
+		if [ ! -r ${test}.in ] ; then    # arguments, no standard input
+			"${2}" $(cat ${test}.args) > ${test}.out
 		else
-			"${2}" $(cat ${tests}.args) < ${tests}.in > ${tests}.out
+			"${2}" $(cat ${test}.args) < ${test}.in > ${test}.out
 		fi
 	fi
 done
